@@ -85,6 +85,7 @@ stage("Trivy Scan") {
               ayan598/register-app-pipeline:latest \
               --no-progress \
               --scanners vuln \
+              --skip-java-db-update \
               --exit-code 0 \
               --severity HIGH,CRITICAL \
               --format table
@@ -92,6 +93,7 @@ stage("Trivy Scan") {
         }
     }
 }
+
 
 
 
