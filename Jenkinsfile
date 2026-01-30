@@ -72,7 +72,7 @@ pipeline {
             }
 
        }
-	stage("Trivy Scan") {
+stage("Trivy Scan") {
     steps {
         script {
             sh '''
@@ -84,7 +84,7 @@ pipeline {
               aquasec/trivy image \
               ayan598/register-app-pipeline:latest \
               --no-progress \
-              --scanners vuln \
+              --scanners os \
               --exit-code 0 \
               --severity HIGH,CRITICAL \
               --format table
@@ -92,6 +92,7 @@ pipeline {
         }
     }
 }
+
 
 	    stage ('Cleanup Artifacts') {
            steps {
