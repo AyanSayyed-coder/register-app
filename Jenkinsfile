@@ -72,27 +72,13 @@ pipeline {
             }
 
        }
-stage("Trivy Scan") {
-    steps {
-        script {
-            sh '''
-            mkdir -p /tmp/trivy-cache
-
-            docker run --rm \
-              -v /var/run/docker.sock:/var/run/docker.sock \
-              -v /tmp/trivy-cache:/root/.cache \
-              aquasec/trivy image \
-              ayan598/register-app-pipeline:latest \
-              --no-progress \
-              --scanners vuln \
-              --skip-java-db-update \
-              --exit-code 0 \
-              --severity HIGH,CRITICAL \
-              --format table
-            '''
-        }
-    }
-}
+     stage("Trivy Scan") {
+           steps {
+               script {
+	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image ayan598/register-app-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+               }
+           }
+       }
 
 
 
