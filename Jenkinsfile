@@ -104,30 +104,15 @@ stage("Trivy Scan") {
                     sh "docker rmi ${IMAGE_NAME}:latest"
                }
           }
+       }  
+		stage("Trigger CD Pipeline") {
+            steps {
+                script {
+                    sh "curl -v -k --user clouduser:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-100-24-36-207.compute-1.amazonaws.com:8080/job/gitops-register-app-cd/buildWithParameters?token=gitops-token'"
+                }
+            }
        }
 		
-stage("Trivy Scan") {
-    steps {
-        script {
-            sh '''
-            mkdir -p /tmp/trivy-cache
-
-            docker run --rm \
-              -v /var/run/docker.sock:/var/run/docker.sock \
-              -v /tmp/trivy-cache:/root/.cache \
-              aquasec/trivy image \
-              ayan598/register-app-pipeline:latest \
-              --no-progress \
-              --scanners vuln \
-              --skip-files /usr/lib/jvm \
-              --skip-dirs /usr/lib/jvm \
-              --exit-code 0 \
-              --severity HIGH,CRITICAL \
-              --format table
-            '''
-        }
-    }
-}
 
 
 
