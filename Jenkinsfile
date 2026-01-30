@@ -84,7 +84,7 @@ stage("Trivy Scan") {
               aquasec/trivy image \
               ayan598/register-app-pipeline:latest \
               --no-progress \
-              --scanners os \
+              --scanners vuln \
               --exit-code 0 \
               --severity HIGH,CRITICAL \
               --format table
@@ -92,6 +92,7 @@ stage("Trivy Scan") {
         }
     }
 }
+
 
 
 	    stage ('Cleanup Artifacts') {
